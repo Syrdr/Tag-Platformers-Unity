@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\StartManager.cs" />
     <Compile Include="Assets\Scripts\CharacterControl.cs" />
+    <Compile Include="Assets\Scripts\EndEarlyManager.cs" />
     <Compile Include="Assets\Scripts\EndManager.cs" />
     <Compile Include="Assets\Scripts\GameData.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />

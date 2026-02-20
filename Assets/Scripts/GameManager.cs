@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     {
         //itPlayer = ItPlayer.Player2;
         //GameData.firstPlayerTime = timeElapsed;
-        FirstPlayertime.GetComponent<TextMeshProUGUI>().text = timer.text;
+        FirstPlayertime.text = timer.text;
         //timeElapsed = 0f;
     }
 }

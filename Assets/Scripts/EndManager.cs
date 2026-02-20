@@ -1,9 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class EndManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI winnerText;
+    [SerializeField] private Button playAgain;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,6 +22,10 @@ public class EndManager : MonoBehaviour
         {
             winnerText.text = "It's a Tie!";
         }
+        playAgain.onClick.AddListener(() => {
+            GameData.ResetGameData();
+            SceneManager.LoadScene("StartScene");
+        });
     }
 
     // Update is called once per frame

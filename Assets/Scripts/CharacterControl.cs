@@ -10,6 +10,7 @@ public class CharacterControl : MonoBehaviour
     public float turnSpeed = 100f;
     [SerializeField] private GameObject pipe_1;
     [SerializeField] private GameObject pipe_2;
+    [SerializeField] private GameObject rocket;
     [SerializeField] private float teleportOffset = 5;
     [SerializeField] private CharacterType characterType;
     [SerializeField] private AudioSource rocketBlastoff;
@@ -19,6 +20,7 @@ public class CharacterControl : MonoBehaviour
     private Keyboard keyboard;
     private bool isMovingUp;
     private bool isMovingDown;
+    private bool endEarly = false;
 
     // Ground check for Runner
     //[SerializeField] private Transform groundCheck;
@@ -135,22 +137,30 @@ public class CharacterControl : MonoBehaviour
             transform.position = pipe_1.transform.position + new Vector3(0, teleportOffset, 0);
             return;
         }
-        if (characterType == CharacterType.Runner && (collision.gameObject.CompareTag("Rocket") || collision.gameObject.CompareTag("Lava")) || (gameManager.timeElapsed > GameData.firstPlayerTime))
+
+        if (GameData.endIfPLayer2Slow && GameData.roundsLeft == 1)
         {
-            if (GameData.roundsLeft == 1)
+            if (gameManager.timeElapsed > GameData.firstPlayerTime)
+            {
+                endEarly = true;
+            }
+        }
+        if ((characterType == CharacterType.Runner && (collision.gameObject.CompareTag("Rocket") || collision.gameObject.CompareTag("Lava")) && /*((gameManager.timeElapsed > GameData.firstPlayerTime) &&*/ GameData.roundsLeft > 0) || endEarly)//)
+        {
+            if (GameData.roundsLeft == 2)
             {
                 GameData.itPlayer = (GameData.itPlayer == ItPlayer.Player1) ? ItPlayer.Player2 : ItPlayer.Player1;
                 transform.position = startingPos;
                 transform.rotation = Quaternion.Euler(startingRot);
                 GameData.firstPlayerTime = gameManager.timeElapsed;
                 gameManager.timeElapsed = 0;
-                collision.gameObject.transform.SetPositionAndRotation(collision.gameObject.GetComponent<CharacterControl>().startingPos, Quaternion.Euler(collision.gameObject.GetComponent<CharacterControl>().startingRot));
+                rocket.transform.SetPositionAndRotation(rocket.GetComponent<CharacterControl>().startingPos, Quaternion.Euler(rocket.GetComponent<CharacterControl>().startingRot));
                 GameData.TriggerItPlayerChanged();
                 GameData.roundsLeft--;
-                foreach(AudioSource audio in FindObjectsOfType<AudioSource>())
+                /*foreach(AudioSource audio in FindObjectsOfType<AudioSource>())
                 {
                     audio.Stop();
-                }
+                }*/
                 return;
             }
                 Debug.Log("Else statement entered");
